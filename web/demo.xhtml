@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>Facelet Title</title>
+        <link href="demo.css" rel="stylesheet" type="text/css"/>
+        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script>
+            $(document).ready(function () {
+
+                FB.login(function (response) {
+                    if (response.session) {
+
+                        var user_id = response.session.uid;
+                        var page_id = "1hp.gaming"; //coca cola
+                        var fql_query = "SELECT uid FROM page_fan WHERE page_id = " + page_id + "and uid=" + user_id;
+                        var the_query = FB.Data.query(fql_query);
+
+                        the_query.wait(function (rows) {
+
+                            if (rows.length === 1 &amp;&amp; rows[0].uid === user_id) {
+                                $("#container_like").show();
+
+                                //here you could also do some ajax and get the content for a "liker" instead of simply showing a hidden div in the page.
+
+                            } else {
+                                $("#container_notlike").show();
+                                //and here you could get the content for a non liker in ajax...
+                            }
+                        });
+
+
+                    } else {
+                        // user is not logged in
+                    }
+                });
+
+            });
+        </script>
+    </h:head>
+    <h:body>
+        <div id="fb-root"></div>
+        <script src="http://connect.facebook.net/en_US/all.js"></script>
+        <script>
+            FB.init({
+                appId: '709580122494400',
+                status: true,
+                cookie: true,
+                xfbml: true
+            });
+        </script>
+
+        <div id="container_notlike">
+            YOU DONT LIKE
+        </div>
+
+        <div id="container_like">
+            YOU LIKE
+        </div>
+    </h:body>
+</html>
+
